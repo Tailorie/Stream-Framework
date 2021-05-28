@@ -326,7 +326,9 @@ class BaseFeed(object):
             activity_ids += activity._activity_ids
         activity_list = self.activity_storage.get_many(activity_ids)
         activity_data = {a.serialization_id: a for a in activity_list}
-        return [activity.get_hydrated(activity_data) for activity in activities]
+
+        returnable = [activity.get_hydrated(activity_data) for activity in activities]
+        return [item for item in returnable if item]
 
     def needs_hydration(self, activities):
         '''

@@ -41,7 +41,10 @@ class DehydratedActivity(BaseActivity):
         :param activities a dict {'activity_id': Activity}
 
         '''
-        activity = activities[int(self.serialization_id)]
+        try:
+            activity = activities[int(self.serialization_id)]
+        except:
+            return None
         activity.dehydrated = False
         return activity
 
