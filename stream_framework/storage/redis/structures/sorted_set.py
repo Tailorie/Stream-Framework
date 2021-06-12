@@ -59,13 +59,13 @@ class RedisSortedSetCache(BaseRedisListCache, BaseRedisHashCache):
         results = []
 
         def _add_many(redis, score_value_pairs):
-            score_value_list = sum(map(list, score_value_pairs), [])
-            score_value_chunks = chunks(score_value_list, 200)
+            score_value_dict = dict(score_value_pairs)
 
-            for score_value_chunk in score_value_chunks:
-                result = redis.zadd(key, *score_value_chunk)
+            for index_key, score in score_value_dict.items():
+                mapping = {index_key: score}
+                result = redis.zadd(key, mapping)
                 logger.debug('adding to %s with score_value_chunk %s',
-                             key, score_value_chunk)
+                             key, mapping)
                 results.append(result)
             return results
 
