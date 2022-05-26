@@ -3,18 +3,18 @@ from stream_framework.activity import Activity, AggregatedActivity
 
 
 @shared_task(ignore_result=True)
-def fanout_operation(feed_manager, feed_class, user_ids, operation, operation_kwargs):
+def fanout_operation(feed_manager, feed_class, user_ids, operation, operation_kwargs, tag=""):
     '''
     Simple task wrapper for _fanout task
     Just making sure code is where you expect it :)
     '''
-    feed_manager.fanout(user_ids, feed_class, operation, operation_kwargs)
-    return "%d user_ids, %r, %r (%r)" % (len(user_ids), feed_class, operation, operation_kwargs)
+    feed_manager.fanout(user_ids, feed_class, operation, operation_kwargs, tag)
+    return "%d user_ids, %r, %r (%r), tag: %r" % (len(user_ids), feed_class, operation, operation_kwargs, tag)
 
 
 @shared_task(ignore_result=True)
-def fanout_operation_hi_priority(feed_manager, feed_class, user_ids, operation, operation_kwargs):
-    return fanout_operation(feed_manager, feed_class, user_ids, operation, operation_kwargs)
+def fanout_operation_hi_priority(feed_manager, feed_class, user_ids, operation, operation_kwargs, tag=""):
+    return fanout_operation(feed_manager, feed_class, user_ids, operation, operation_kwargs, tag)
 
 
 @shared_task(ignore_result=True)

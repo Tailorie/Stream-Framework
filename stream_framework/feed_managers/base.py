@@ -296,7 +296,7 @@ class Manager(object):
         '''
         return self.priority_fanout_task.get(priority, fanout_operation)
 
-    def create_fanout_tasks(self, follower_ids, feed_class, operation, operation_kwargs=None, fanout_priority=None):
+    def create_fanout_tasks(self, follower_ids, feed_class, operation, operation_kwargs=None, fanout_priority=None, tag=""):
         '''
         Creates the fanout task for the given activities and feed classes
         followers
@@ -327,12 +327,13 @@ class Manager(object):
                 feed_class=feed_class,
                 user_ids=ids_chunk,
                 operation=operation,
-                operation_kwargs=operation_kwargs
+                operation_kwargs=operation_kwargs,
+                tag=tag
             )
             tasks.append(task)
         return tasks
 
-    def fanout(self, user_ids, feed_class, operation, operation_kwargs):
+    def fanout(self, user_ids, feed_class, operation, operation_kwargs, tag=""):
         '''
         This functionality is called from within stream_framework.tasks.fanout_operation
 
@@ -353,7 +354,10 @@ class Manager(object):
                 operation_kwargs['batch_interface'] = batch_interface
                 for user_id in user_ids:
                     logger.debug('now handling fanout to user %s', user_id)
-                    feed = feed_class(user_id)
+                    if tag != "":
+                        feed = feed_class(user_id, tag)
+                    else:
+                        feed = feed_class(user_id)
                     operation(feed, **operation_kwargs)
             logger.info('finished fanout for feed %s', feed_class)
         fanout_count = len(operation_kwargs['activities']) * len(user_ids)
