@@ -33,7 +33,7 @@ class ActivitySerializer(BaseSerializer):
         extra_context = activity.extra_context.copy()
         pickle_string = ''
         if extra_context:
-            pickle_string = pickle.dumps(activity.extra_context)
+            pickle_string = pickle.dumps(activity.extra_context, protocol=3)
             if six.PY3:
                 pickle_string = pickle_string.decode('latin1')
         parts += [activity_time, pickle_string]
