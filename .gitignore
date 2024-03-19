@@ -13,3 +13,6 @@ pinterest_example/static/CACHE/
 .coverage
 
 .idea/
+
+.python-version
+pyrightconfig.json
