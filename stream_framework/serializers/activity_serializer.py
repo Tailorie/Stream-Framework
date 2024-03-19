@@ -18,9 +18,9 @@ class ActivitySerializer(BaseSerializer):
     - verb_id
     - object_id
     - target_id
-    - extra_context (pickle)
+    - extra_context (pickle + base64)
 
-    None values are stored as 0
+    None values are stored as 0.
     """
 
     def dumps(self, activity: Activity) -> str:
